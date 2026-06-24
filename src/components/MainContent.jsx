@@ -13,7 +13,7 @@ const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
 
   const [habits, setHabits] = useState([
     {
-    name: "Drink Water",
+    name: "Drink 8 glasses of water",
     completed: false
   },
 
@@ -25,20 +25,70 @@ const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
   {
     name: "Read 10 Pages",
     completed: false
+  }, 
+
+  {
+    name: 'Meditate for 10 minutes',
+    completed: true
+  },
+
+  {
+    name: 'No sugar',
+    completed: false
   }
   ])
+  
+  const handleToggle = (idx) =>{
+    const updatedHabits = habits.map((habit,index) => {
+      if(index === idx) {
+        return{
+          ...habit,
+          completed: !habit.completed,
+        }
+      }
+      return habit
+    })
+    setHabits(updatedHabits);
+  }
 
+  const handleAddHabit = (newHabit) => {
+    if(newHabit.trim() === ""){
+      return false
+    }
+     const newHabitObject = {name: newHabit, 
+      completed: false
+  }
+  setHabits([
+    ...habits,
+    newHabitObject
+  ])
+
+  return true
+}
+
+const handleDeleteHabit = (idx) => {
+  const updatedHabits = habits.filter((habit, index) => {
+    return index !== idx
+  })
+
+  setHabits(updatedHabits);
+}
+
+  const completedCount = habits.filter((habit) => {
+    return habit.completed;
+  }).length;
+  
 
   const statsData = [
   {
     title: "Total Habits",
-    value: 8,
+    value: habits.length,
     subtitle: "+2 from last week",
     icon: ClipboardList
   },
   {
     title: "Completed Today",
-    value: 5,
+    value: completedCount,
     subtitle: "62% completion rate",
     icon: CircleCheckBig
   },
@@ -61,10 +111,10 @@ const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
         <Header setIsOpen={setIsOpen} isOpen={isOpen} setIsDark={setIsDark} isDark={isDark}/>
         <div className='flex gap-5 px-6 flex-nowrap'>
           {statsData.map((item,idx) => {
-          return <StatsCard key={idx} {...item}/>
+          return <StatsCard key={idx} {...item}  />
         })}
         </div>
-        <DashboardContent />
+        <DashboardContent habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit}/>
     </div>
   )
 }

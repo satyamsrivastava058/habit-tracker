@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList, PieChart, Pie, Cell} from 'recharts'
+import { Trash2 } from 'lucide-react'
 
-const DashboardContent = () => {
+const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit}) => {
 
     const weeklyProgressData = [
   {
@@ -39,16 +40,61 @@ const streakData = [
   { name: "Remaining", value: 20 },
 ]
 
+const [newHabit, setNewHabit] = useState("");
+
+const [showInput, setShowInput] = useState(false);
+
+function handleShowInput() { 
+  setShowInput(true);
+}
+
   return (
-    <div className='grid grid-cols-3 gap-5 min-h-[420px] m-6 '>
+    <div className='grid grid-cols-3 gap-5 min-h-105 m-6 '>
         <div className='row-span-2 rounded-xl p-5 border border-blue-300 space-y-4 '>
             <h1 className='text-xl font-semibold'>Today's habits</h1>
-            <p className='flex justify-between items-center pb-3 border-b  border-gray-300'>Drink 8 glasses of water <input className="w-4 h-4 accent-green-600" type='checkbox'></input></p>
-            <p className='flex justify-between items-center pb-3 border-b  border-gray-300'>Morning Workout <input className="w-4 h-4 accent-green-600" type='checkbox'></input></p>
-            <p className='flex justify-between items-center pb-3 border-b  border-gray-300'>Read 20 pages<input className="w-4 h-4 accent-green-600" type='checkbox'></input></p>
-            <p className='flex justify-between items-center pb-3 border-b  border-gray-300'>Meditate for 10 minutes<input className="w-4 h-4 accent-green-600" type='checkbox'></input></p>
-            <p className='flex justify-between items-center pb-3 border-b  border-gray-300'>No sugar<input className="w-4 h-4 accent-green-600"  type='checkbox'></input></p>
-            <button className='text-[#494deb]'>+ Add habits</button>
+            {habits.map((habit,idx ) => {
+              return(
+                <p key={idx} className='flex justify-between items-center pb-3 border-b  border-gray-300'> 
+                  {habit.name} 
+                  <div className='flex items-center justify-between gap-3.5'>
+                    <input className='w-4 h-4 accent-green-600' type='checkbox' 
+                    checked={habit.completed} 
+                    onChange={ () => {
+                      handleToggle(idx);
+                    }}
+                    />
+                    <Trash2 size={20} color="#8f0000" 
+                    onClick={ () => {
+                      handleDeleteHabit(idx)
+                    }}
+                    />
+                  </div>
+                </p>
+              )
+            })}
+            {showInput && 
+            <input 
+            className='w-full flex items-center justify-center pb-3 border-b  border-gray-300'
+            value={newHabit}
+            onChange={ (e) => {
+              setNewHabit(e.target.value)
+            }}
+            onKeyDown={ (e) => {
+              if(e.key === "Enter"){
+                const success = handleAddHabit(newHabit);
+
+                if(success){
+                  setNewHabit("")
+                  setShowInput(false) 
+                }
+            }}}
+            />}
+            <button 
+            className='text-[#494deb]'
+            onClick={() => {
+              handleShowInput();
+            }}
+            >+ Add habits</button>
         </div>
         <div className=' col-span-2 flex gap-5'>
             <div className=' rounded-xl p-5 border border-blue-300 space-y-4 flex-1 '>
@@ -76,7 +122,7 @@ const streakData = [
                           <p className='text-gray-500'>Days</p>
                       </div>
                   </div>
-                  <div className='max-w-[180px]'>
+                  <div className='max-w-45'>
                     <p className='font-medium'>
                       You're doing great!
                     </p>
