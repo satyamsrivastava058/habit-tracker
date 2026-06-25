@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './Header'
 import {
   ClipboardList,
@@ -37,6 +37,18 @@ const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
     completed: false
   }
   ])
+
+  useEffect(() => {
+    const savedHabits = localStorage.getItem("Habits");
+
+    if(savedHabits) {
+      setHabits(JSON.parse(savedHabits));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("Habits", JSON.stringify(habits));
+  }, [habits]);
   
   const handleToggle = (idx) =>{
     const updatedHabits = habits.map((habit,index) => {
