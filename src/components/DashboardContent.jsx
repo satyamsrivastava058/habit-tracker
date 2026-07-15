@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList, PieChart, Pie, Cell} from 'recharts'
 import { Trash2 } from 'lucide-react'
 
-const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit}) => {
+const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today}) => {
 
     const weeklyProgressData = [
   {
@@ -35,11 +35,6 @@ const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHab
   }
 ]
 
-const streakData = [
-  { name: "Completed", value: 80 },
-  { name: "Remaining", value: 20 },
-]
-
 const [newHabit, setNewHabit] = useState("");
 
 const [showInput, setShowInput] = useState(false);
@@ -58,14 +53,14 @@ function handleShowInput() {
                   {habit.name} 
                   <div className='flex items-center justify-between gap-3.5'>
                     <input className='w-4 h-4 accent-green-600' type='checkbox' 
-                    checked={habit.completed} 
+                    checked={habit.completedDates.includes(today)} 
                     onChange={ () => {
-                      handleToggle(idx);
+                      handleToggle(habit.id);
                     }}
                     />
                     <Trash2 size={20} color="#8f0000" 
                     onClick={ () => {
-                      handleDeleteHabit(idx)
+                      handleDeleteHabit(habit.id)
                     }}
                     />
                   </div>
@@ -90,7 +85,7 @@ function handleShowInput() {
             }}}
             />}
             <button 
-            className='text-[#494deb]'
+            className='text-[#494deb] cursor-pointer'
             onClick={() => {
               handleShowInput();
             }}
@@ -98,13 +93,13 @@ function handleShowInput() {
         </div>
         <div className=' col-span-2 flex gap-5'>
             <div className=' rounded-xl p-5 border border-blue-300 space-y-4 flex-1 '>
-              <h1 className='text-xl font-semibold mb-6'>Streak Overview</h1>
+              <h1 className='text-xl font-semibold mb-6'>Today's Progress</h1>
               <div className='flex gap-5  items-center'>
                   <div className='relative w-40 h-40'>
                       <ResponsiveContainer width='100%' height='100%'>
                           <PieChart>
                               <Pie 
-                                data={streakData}
+                                data={ChartData}
                                 dataKey='value'
                                 innerRadius={50}
                                 outerRadius={60}
@@ -118,8 +113,8 @@ function handleShowInput() {
                           </PieChart>
                       </ResponsiveContainer>
                       <div className='absolute inset-0 flex flex-col items-center justify-center'>
-                          <h1 className='text-3xl font-bold'>7</h1>
-                          <p className='text-gray-500'>Days</p>
+                          <h1 className='text-2xl font-bold'>{Math.round(completionPercentage)}%</h1>
+                          <p className='text-gray-500'>Completed</p>
                       </div>
                   </div>
                   <div className='max-w-45'>

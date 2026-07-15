@@ -9,53 +9,77 @@ import {
 import StatsCard from './StatsCard'
 import DashboardContent from './DashboardContent'
 
+
 const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
 
-  const [habits, setHabits] = useState([
+  const today = new Date().toISOString().split("T")[0];
+
+  const [habits, setHabits] = useState(() => {
+  const savedHabits = localStorage.getItem("Habits");
+
+  if (savedHabits) {
+    return JSON.parse(savedHabits);
+  }
+    return [
     {
     name: "Drink 8 glasses of water",
-    completed: false
+    id: 1,
+    createdAt: Date.now(),
+    completedDates: []
   },
 
   {
     name: "Morning Workout",
-    completed: true
+    id: 2,
+    createdAt: Date.now(),
+    completedDates :[]
   },
 
   {
     name: "Read 10 Pages",
-    completed: false
+    id: 3,
+    createdAt: Date.now(),
+    completedDates :[]
   }, 
 
   {
     name: 'Meditate for 10 minutes',
-    completed: true
-  },
-
-  {
-    name: 'No sugar',
-    completed: false
+    id: 4,
+    createdAt: Date.now(),
+    completedDates :[]
   }
-  ])
+  ]})
 
-  useEffect(() => {
-    const savedHabits = localStorage.getItem("Habits");
+  // useEffect(() => {
+  //   const savedHabits = localStorage.getItem("Habits");
 
-    if(savedHabits) {
-      setHabits(JSON.parse(savedHabits));
-    }
-  }, []);
+  //   if(savedHabits) {
+  //     setHabits(JSON.parse(savedHabits));
+  //   }
+  // }, []); 
 
   useEffect(() => {
     localStorage.setItem("Habits", JSON.stringify(habits));
   }, [habits]);
   
-  const handleToggle = (idx) =>{
-    const updatedHabits = habits.map((habit,index) => {
-      if(index === idx) {
-        return{
-          ...habit,
-          completed: !habit.completed,
+  const handleToggle = (id) =>{
+    const updatedHabits = habits.map((habit) => {
+      if(habit.id === id) {
+        if(habit.completedDates.includes(today)){
+          return{
+            ...habit,
+            completedDates: habit.completedDates.filter((date) => {
+              return date !== today
+            })
+          }
+        }
+        else {
+          return{
+            ...habit,
+            completedDates: [...habit.completedDates,
+              today
+            ]
+          }
         }
       }
       return habit
@@ -64,11 +88,14 @@ const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
   }
 
   const handleAddHabit = (newHabit) => {
+      const now = Date.now();
     if(newHabit.trim() === ""){
       return false
     }
      const newHabitObject = {name: newHabit, 
-      completed: false
+      id: now,
+      createdAt: now,
+      completedDates: []
   }
   setHabits([
     ...habits,
@@ -78,18 +105,45 @@ const MainContent = ({setIsOpen, isOpen, setIsDark, isDark}) => {
   return true
 }
 
-const handleDeleteHabit = (idx) => {
-  const updatedHabits = habits.filter((habit, index) => {
-    return index !== idx
+const handleDeleteHabit = (id) => {
+  const updatedHabits = habits.filter((habit) => {
+    return habit.id !== id
   })
 
   setHabits(updatedHabits);
 }
 
   const completedCount = habits.filter((habit) => {
-    return habit.completed;
+    return habit.completedDates.includes(today);
   }).length;
+
+  const remainingHabits = habits.length - completedCount;
+
+  const completionPercentage = habits.length>0 ? (completedCount/habits.length)*100 : 0;
   
+  const ChartData = [
+    { name: "Completed", value: completedCount },
+    { name: "Remaining", value: remainingHabits }
+  ]
+
+  const calculateCurrentStreak = (habits) => {
+    let streak = 0;
+    let date = new Date();
+    let currentDate =  date.toISOString().split("T")[0];
+
+    while(habits.some((habit) => {
+      return habit.completedDates.includes(currentDate);
+    }
+    )) {
+      streak++;
+      date.setDate(date.getDate()-1);
+      currentDate =  date.toISOString().split("T")[0];
+    }
+    return streak
+  }
+
+
+const currentStreak = calculateCurrentStreak(habits);
 
   const statsData = [
   {
@@ -101,12 +155,12 @@ const handleDeleteHabit = (idx) => {
   {
     title: "Completed Today",
     value: completedCount,
-    subtitle: "62% completion rate",
+    subtitle: `${Math.round(completionPercentage)}% Completion Rate`,
     icon: CircleCheckBig
   },
   {
     title: "Current Streak",
-    value: 7,
+    value: currentStreak,
     subtitle: "days in a row",
     icon: Flame
   },
@@ -126,7 +180,7 @@ const handleDeleteHabit = (idx) => {
           return <StatsCard key={idx} {...item}  />
         })}
         </div>
-        <DashboardContent habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit}/>
+        <DashboardContent habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit} ChartData={ChartData} completionPercentage={completionPercentage} today={today}/>
     </div>
   )
 }
