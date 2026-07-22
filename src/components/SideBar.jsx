@@ -19,12 +19,12 @@ const SideBar = ({isDark}) => {
           <NavLink to="/">Dashboard</NavLink>
           <NavLink to="/project-info">Project Information</NavLink>
         </div>
-        <div className=' min-h-20 rounded-xl flex flex-col items-center justify-center font-semibold bg-[#f1f4fd]'  >
-          <h1 className='text-[#494deb]'>Small habits,</h1>
-          <h1 className=''>big changes.</h1>
+        <div className={`min-h-20 rounded-xl flex flex-col items-center justify-center font-semibold ${isDark? "bg-gray-800" : "bg-[#f1f4fd]" }`}>
+          <h1 className="text-[#494deb]">Small habits,</h1>
+          <h1 className={isDark ? "text-white" : "text-gray-900"}>big changes.</h1>
         </div>
       </div>
-    </div>
+    </div> 
   )
 }
 
