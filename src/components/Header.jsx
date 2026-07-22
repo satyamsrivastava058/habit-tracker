@@ -26,7 +26,7 @@ const Header = ({setIsOpen, isOpen, setIsDark, isDark}) => {
             <h2>Hello,User</h2>
         </div>
       </div>
-      <div className='flex justify-between px-6 items-center min-h-17 my-4'>
+      <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 px-4 md:px-6 my-4'>
         <div>
           <h1 className='text-3xl font-semibold'>Good morning, User!</h1>
           <p>Here's how your habits are progressing today.</p>

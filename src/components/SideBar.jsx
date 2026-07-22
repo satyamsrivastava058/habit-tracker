@@ -3,9 +3,13 @@ import { Target } from 'lucide-react'
 import { NavLink } from "react-router-dom";
 
 
-const SideBar = () => {
+const SideBar = ({isDark}) => {
   return (
-    <div className=' min-h-screen w-64 px-6 pb-6 pt-1 flex flex-col border-r border-r-gray-300'>
+    <div className={`min-h-screen w-64 lg:w-72 px-6 pb-6 pt-1 flex flex-col border-r border-r-gray-300 ${
+    isDark
+      ? "bg-gray-900 border-gray-700"
+      : "bg-white border-blue-200"
+}`}>
       <div className='flex pl-1 mb-4 items-center font-bold text-xl gap-4 min-h-15 w-full '>
         <Target size={28} color="#132186" strokeWidth={1.5} />
         <h1>HabitTrack</h1>
@@ -17,7 +21,7 @@ const SideBar = () => {
         </div>
         <div className=' min-h-20 rounded-xl flex flex-col items-center justify-center font-semibold bg-[#f1f4fd]'  >
           <h1 className='text-[#494deb]'>Small habits,</h1>
-          <h1>big changes.</h1>
+          <h1 className=''>big changes.</h1>
         </div>
       </div>
     </div>

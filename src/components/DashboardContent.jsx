@@ -13,8 +13,8 @@ function handleShowInput() {
 }
 
   return (
-    <div  className={`grid grid-cols-3 gap-5 min-h-105 m-6 ${isDark ? "text-white" :"text-gray-900"}`}>
-        <div className={`row-span-2 rounded-xl p-5 border border-blue-200 space-y-4 shadow-sm ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"} `}>
+    <div  className={`grid grid-cols-1 xl:grid-cols-3 gap-5 m-4 md:m-6 ${isDark ? "text-white" :"text-gray-900"}`}>
+        <div className={`xl:row-span-2 rounded-xl p-5 border border-blue-200 space-y-4 shadow-sm ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"} `}>
             <h1 className='text-xl font-semibold'>Today's habits</h1>
             {habits.map((habit,idx ) => {
               return(
@@ -38,7 +38,7 @@ function handleShowInput() {
             })}
             {showInput && 
             <input 
-            className='w-full flex items-center justify-center pb-3 border-b  border-gray-300'
+            className={`w-full flex items-center justify-center pb-3 border-b  border-gray-300 ${isDark?'bg-gray-800 border-gray-700 text-white': 'bg-white border-gray-300'}`}
             value={newHabit}
             onChange={ (e) => {
               setNewHabit(e.target.value)
@@ -54,17 +54,17 @@ function handleShowInput() {
             }}}
             />}
             <button 
-            className='text-[#494deb] cursor-pointer'
+            className='text-[#494deb] cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:' 
             onClick={() => {
               handleShowInput();
             }}
             >+ Add habits</button>
         </div>
-        <div className=' col-span-2 flex gap-5'>
+        <div className='xl:col-span-2 flex flex-col lg:flex-row gap-5'>
             <div className={` rounded-xl p-5 border border-blue-200 space-y-4 flex-1 shadow-sm ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"}`}>
               <h1 className='text-xl font-semibold mb-6'>Today's Progress</h1>
               <div className='flex gap-5  items-center'>
-                  <div className='relative w-40 h-40'>
+                  <div className='relative w-45 h-40'>
                       <ResponsiveContainer width='100%' height='100%'>
                           <PieChart>
                               <Pie 
@@ -107,23 +107,23 @@ function handleShowInput() {
                                    <XAxis dataKey={'day'}
                                    axisLine={false}
                                    tickLine={false}
-                                   tick={{ fontWeight: 600 }}/>
+                                   tick={{ fontWeight: 600, fill:isDark ? "#d1d5db" : "#374151" }}/>
                                    <YAxis dataKey={'progress'}
                                      axisLine={false}
                                      tickLine={false}
-                                     tick={{ fontWeight: 600 }}
+                                     tick={{ fontWeight: 600, fill:isDark ? "#d1d5db" : "#374151" }}
                                      tickFormatter={(value) => `${value}%`}/>
                                    <Bar
                                      dataKey={'progress'}
                                      fill='#494deb'
                                      radius={[6,6,0,0]} />
-                                     <CartesianGrid vertical={false} strokeDasharray="0" stroke="#e5e7eb" />
+                                     <CartesianGrid vertical={false} strokeDasharray="0" stroke={isDark ? "#374151" : "#e5e7eb"} />
                                </BarChart>
                            </ResponsiveContainer>
                        </div>
                </div>
         </div>
-        <div className={`col-span-2  rounded-xl p-5 border border-blue-200 shadow-sm space-y-4 ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"}`}>
+        <div className={`xl:col-span-2  rounded-xl p-5 border border-blue-200 shadow-sm space-y-4 ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"}`}>
             <h2 className='text-xl font-semibold'>Recent Completions</h2>
             {recentActivity.map((activity) => {
               return(

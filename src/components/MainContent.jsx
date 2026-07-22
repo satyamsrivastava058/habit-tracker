@@ -274,7 +274,7 @@ const getTimeAgo = (lastCompletedDate) => {
   return (
     <div className='min-h-screen w-full '>
         <Header setIsOpen={setIsOpen} isOpen={isOpen} setIsDark={setIsDark} isDark={isDark}/>
-        <div className='flex gap-5 px-6 flex-nowrap'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 px-4 md:px-6'>
           {statsData.map((item,idx) => {
           return <StatsCard key={idx} {...item} isDark={isDark} />
         })}
