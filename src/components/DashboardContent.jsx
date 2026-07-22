@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList, PieChart, Pie, Cell} from 'recharts'
 import { Trash2 } from 'lucide-react'
 
-const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today, weeklyProgressData, recentActivity, getTimeAgo}) => {
+const DashboardContent = ({isDark, habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today, weeklyProgressData, recentActivity, getTimeAgo}) => {
 
 const [newHabit, setNewHabit] = useState("");
 
@@ -13,8 +13,8 @@ function handleShowInput() {
 }
 
   return (
-    <div className='grid grid-cols-3 gap-5 min-h-105 m-6 '>
-        <div className='row-span-2 rounded-xl p-5 border border-blue-300 space-y-4 '>
+    <div  className={`grid grid-cols-3 gap-5 min-h-105 m-6 ${isDark ? "text-white" :"text-gray-900"}`}>
+        <div className={`row-span-2 rounded-xl p-5 border border-blue-200 space-y-4 shadow-sm ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"} `}>
             <h1 className='text-xl font-semibold'>Today's habits</h1>
             {habits.map((habit,idx ) => {
               return(
@@ -61,7 +61,7 @@ function handleShowInput() {
             >+ Add habits</button>
         </div>
         <div className=' col-span-2 flex gap-5'>
-            <div className=' rounded-xl p-5 border border-blue-300 space-y-4 flex-1 '>
+            <div className={` rounded-xl p-5 border border-blue-200 space-y-4 flex-1 shadow-sm ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"}`}>
               <h1 className='text-xl font-semibold mb-6'>Today's Progress</h1>
               <div className='flex gap-5  items-center'>
                   <div className='relative w-40 h-40'>
@@ -99,7 +99,7 @@ function handleShowInput() {
                   </div>
                </div>
                    </div>
-                   <div className=' rounded-xl p-5 border border-blue-300 flex-[1.7]'>
+                   <div className={`rounded-xl p-5 border border-blue-200 shadow-sm flex-[1.7] ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"}`}>
                        <h1 className='text-xl font-semibold mb-6'>Weekly Progress</h1>
                        <div>
                            <ResponsiveContainer width='100%' height={220}>
@@ -123,7 +123,7 @@ function handleShowInput() {
                        </div>
                </div>
         </div>
-        <div className='col-span-2  rounded-xl p-5 border border-blue-300 space-y-4'>
+        <div className={`col-span-2  rounded-xl p-5 border border-blue-200 shadow-sm space-y-4 ${isDark ? "bg-gray-900 border-gray-700" : "bg-white border-blue-200"}`}>
             <h2 className='text-xl font-semibold'>Recent Completions</h2>
             {recentActivity.map((activity) => {
               return(

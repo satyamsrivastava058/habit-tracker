@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import {Routes, Route} from 'react-router-dom'
+
 import SideBar from './components/SideBar'
 import MainContent from './components/MainContent'
+import ProjectInfo from './components/ProjectInfo'
+
 
 const App = () => {
 
@@ -10,7 +14,11 @@ const App = () => {
   return (
     <div className={`${isDark ? "bg-black text-white" : "bg-white text-black"}  flex`}>
       {isOpen && <SideBar />}
-      <MainContent setIsOpen={setIsOpen} isOpen={isOpen } setIsDark={setIsDark} isDark={isDark}/>
+      <Routes>
+        <Route path="/" element={<MainContent setIsOpen={setIsOpen} isOpen={isOpen } setIsDark={setIsDark} isDark={isDark}/>} />
+        <Route path="/project-info" element={<ProjectInfo isDark={isDark}/>} />
+      </Routes>
+      
     </div>
   )
 }

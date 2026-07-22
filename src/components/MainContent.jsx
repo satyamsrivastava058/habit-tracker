@@ -179,7 +179,7 @@ const bestStreak = calculateBestStreak(habits);
   {
     title: "Total Habits",
     value: habits.length,
-    subtitle: "+2 from last week",
+    subtitle: "Build better every day.",
     icon: ClipboardList
   },
   {
@@ -276,10 +276,10 @@ const getTimeAgo = (lastCompletedDate) => {
         <Header setIsOpen={setIsOpen} isOpen={isOpen} setIsDark={setIsDark} isDark={isDark}/>
         <div className='flex gap-5 px-6 flex-nowrap'>
           {statsData.map((item,idx) => {
-          return <StatsCard key={idx} {...item}  />
+          return <StatsCard key={idx} {...item} isDark={isDark} />
         })}
         </div>
-        <DashboardContent habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit} ChartData={ChartData} completionPercentage={completionPercentage} today={today} weeklyProgressData={weeklyProgressData} recentActivity={recentActivity} getTimeAgo={getTimeAgo}/>
+        <DashboardContent isDark={isDark} habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit} ChartData={ChartData} completionPercentage={completionPercentage} today={today} weeklyProgressData={weeklyProgressData} recentActivity={recentActivity} getTimeAgo={getTimeAgo}/>
     </div>
   )
 }

@@ -1,5 +1,7 @@
 import React from 'react'
 import { Target } from 'lucide-react'
+import { NavLink } from "react-router-dom";
+
 
 const SideBar = () => {
   return (
@@ -10,13 +12,8 @@ const SideBar = () => {
       </div>
       <div className=' flex flex-col flex-1 justify-between h-full pl-2'>
         <div className='flex flex-col gap-5 font-semibold text-l text-[#494deb] cursor-pointer' >
-          <h2>Dashboard</h2>
-          <h2>Habits</h2>             
-          <h2>Calendar</h2>
-          <h2>Statistics</h2>
-          <h2>Goals</h2>
-          <h2>Notes</h2>
-          <h2>Settings</h2>
+          <NavLink to="/">Dashboard</NavLink>
+          <NavLink to="/project-info">Project Information</NavLink>
         </div>
         <div className=' min-h-20 rounded-xl flex flex-col items-center justify-center font-semibold bg-[#f1f4fd]'  >
           <h1 className='text-[#494deb]'>Small habits,</h1>
