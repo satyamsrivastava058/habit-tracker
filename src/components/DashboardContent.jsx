@@ -2,38 +2,7 @@ import React, { useState } from 'react'
 import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList, PieChart, Pie, Cell} from 'recharts'
 import { Trash2 } from 'lucide-react'
 
-const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today}) => {
-
-    const weeklyProgressData = [
-  {
-    day: "Mon",
-    progress: 70,
-  },
-  {
-    day: "Tue",
-    progress: 45,
-  },
-  {
-    day: "Wed",
-    progress: 85,
-  },
-  {
-    day: "Thu",
-    progress: 60,
-  },
-  {
-    day: "Fri",
-    progress: 90,
-  },
-  {
-    day: "Sat",
-    progress: 55,
-  },
-  {
-    day: "Sun",
-    progress: 75,
-  }
-]
+const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today, weeklyProgressData}) => {
 
 const [newHabit, setNewHabit] = useState("");
 
