@@ -4,7 +4,8 @@ import {
   ClipboardList,
   CircleCheckBig,
   Flame,
-  Trophy
+  Trophy,
+  HandGrabIcon
 } from "lucide-react"
 import StatsCard from './StatsCard'
 import DashboardContent from './DashboardContent'
@@ -172,6 +173,8 @@ const calculateBestStreak = (habits) => {
     return bestStreak
 }
 
+const bestStreak = calculateBestStreak(habits);
+
   const statsData = [
   {
     title: "Total Habits",
@@ -194,7 +197,7 @@ const calculateBestStreak = (habits) => {
   
   {
     title: "Best Streak",
-    value: 12,
+    value: bestStreak,
     subtitle: "days in a row",
     icon: Trophy
   }
@@ -225,6 +228,49 @@ const calculateWeeklyProgress = (habits) => {
 
  const weeklyProgressData = calculateWeeklyProgress(habits)
 
+ const calculateRecentActivity = (habits) => {
+  const completedHabits = habits.filter((habit) =>{
+    return habit.completedDates.length > 0;
+  })
+  const activities =  completedHabits.map((habit) => {
+    const lastCompletedDate = habit.completedDates[habit.completedDates.length - 1];
+
+    return {
+      name: habit.name,
+      lastCompletedDate
+    }
+  })
+  activities.sort((a,b) => {
+    return (
+      new Date(b.lastCompletedDate).getTime() - new Date(a.lastCompletedDate).getTime()
+    )
+  })
+
+  return activities
+}
+
+const recentActivity = calculateRecentActivity(habits);
+
+const getTimeAgo = (lastCompletedDate) => {
+  const today = new Date();
+  const completed = new Date(lastCompletedDate)
+
+  today.setHours(0,0,0,0)
+  completed.setHours(0,0,0,0)
+
+  const difference = today.getTime() - completed.getTime();
+
+  const days = Math.floor(difference/(24*60*60*1000));
+
+  if(days === 0) {
+    return "today";
+  }
+  if(days === 1) {
+    return "yesterday";
+  }
+  return `${days} days ago`
+}
+
   return (
     <div className='min-h-screen w-full '>
         <Header setIsOpen={setIsOpen} isOpen={isOpen} setIsDark={setIsDark} isDark={isDark}/>
@@ -233,7 +279,7 @@ const calculateWeeklyProgress = (habits) => {
           return <StatsCard key={idx} {...item}  />
         })}
         </div>
-        <DashboardContent habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit} ChartData={ChartData} completionPercentage={completionPercentage} today={today} weeklyProgressData={weeklyProgressData}/>
+        <DashboardContent habits={habits} handleToggle={handleToggle} handleAddHabit={handleAddHabit} handleDeleteHabit={handleDeleteHabit} ChartData={ChartData} completionPercentage={completionPercentage} today={today} weeklyProgressData={weeklyProgressData} recentActivity={recentActivity} getTimeAgo={getTimeAgo}/>
     </div>
   )
 }

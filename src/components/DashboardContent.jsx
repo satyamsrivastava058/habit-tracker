@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList, PieChart, Pie, Cell} from 'recharts'
 import { Trash2 } from 'lucide-react'
 
-const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today, weeklyProgressData}) => {
+const DashboardContent = ({habits, handleToggle, handleAddHabit, handleDeleteHabit, ChartData, completionPercentage, today, weeklyProgressData, recentActivity, getTimeAgo}) => {
 
 const [newHabit, setNewHabit] = useState("");
 
@@ -124,24 +124,22 @@ function handleShowInput() {
                </div>
         </div>
         <div className='col-span-2  rounded-xl p-5 border border-blue-300 space-y-4'>
-            <h2 className='text-xl font-semibold'>Recent Activities</h2>
-            <div className='flex justify-between items-center border-b border-b-gray-300 pb-3'>
-                <p>Completed "Morning Workout"</p>
-                <p>7:30</p>
-            </div>
-            <div className='flex justify-between items-center border-b border-b-gray-300 pb-3'>
-                <p>Completed "Drinks 8 glasses of water"</p>
-                <p>7:15</p>
-            </div>
-            <div className='flex justify-between items-center border-b border-b-gray-300 pb-3'>
-                <p>Added new habit "No sugar"</p>
-                <p>yesterday</p>
-            </div>
-            <div className='flex justify-between items-center border-b border-b-gray-300 pb-3'>
-                <p>Updated habit "Read 20 pages"</p>
-                <p>yesterday</p>
-            </div>
-            <button className='text-[#494deb]'>View All Activity</button>
+            <h2 className='text-xl font-semibold'>Recent Completions</h2>
+            {recentActivity.map((activity) => {
+              return(
+              <div
+                key={activity.name}
+                className='flex justify-between items-center border-b border-b-gray-300 pb-3'
+              >
+                <p>
+                  Completed "{activity.name}"
+                </p>
+                <p>
+                  {getTimeAgo(activity.lastCompletedDate)}
+                </p>
+              </div>
+              )
+            })}
         </div>
     </div>
   )
